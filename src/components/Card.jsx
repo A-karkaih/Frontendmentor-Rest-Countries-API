@@ -3,7 +3,7 @@ export function Card({ country }) {
   return (
     <Link to={`/country/${country.name.common}`}>
       <div
-        className=" w-full max-w-100  flex h-75 pb-7 flex-col gap-3 shadow-lg cursor-pointer 
+        className=" w-62.5 h-75   flex pb-7 flex-col gap-3 shadow-lg cursor-pointer 
            shadow-gray-400 bg-white rounded-md rounded-t-xl dark:bg-[#374152] dark:shadow-none dark:text-white transition-colors duration-300"
       >
         <img
