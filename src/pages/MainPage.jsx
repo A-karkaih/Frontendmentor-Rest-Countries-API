@@ -3,6 +3,19 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Search from "../components/Search";
 import { CardSkeleton } from "../components/skeletons/CardSkeleton";
+import { motion } from "motion/react";
+
+const container = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15, delayChildren: 0.5 },
+  },
+};
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 },
+};
 
 export function MainPage() {
   const [countries, setCountries] = useState([]);
@@ -11,19 +24,21 @@ export function MainPage() {
   const [region, setRegion] = useState("");
   useEffect(() => {
     async function fetchData() {
-      setLoading(true); // ✅ Set to true
+      setLoading(true);
 
       try {
         const res = await axios.get(
           `https://restcountries.com/v3.1/all?fields=name,flags,capital,population,region`,
         );
-        setTimeout(() => {
-          setCountries(res.data);
-          setLoading(false); // ✅ Set to false after data arrives
-        }, 500);
+        setCountries(res.data);
+        setLoading(false);
+        // setTimeout(() => {
+
+        //   setLoading(false);
+        // }, 100);
       } catch (err) {
         console.log(err);
-        setLoading(false); // ✅ Set to false in error case
+        setLoading(false);
       }
     }
     fetchData();
@@ -52,11 +67,22 @@ export function MainPage() {
           ))}
         </section>
       ) : (
-        <section className="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3">
+        <motion.section
+          variants={container}
+          initial="hidden"
+          animate="visible"
+          className="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3"
+        >
           {filteredCountries.map((country) => {
-            return <Card key={country.name.common} country={country} />;
+            return (
+              <Card
+                animation={item}
+                key={country.name.common}
+                country={country}
+              />
+            );
           })}
-        </section>
+        </motion.section>
       )}
     </main>
   );
